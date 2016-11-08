@@ -45,7 +45,7 @@ public class BookRepositoryTest {
     @Test
     public void bookFetchedByName() throws Exception {
         String bookName = "Eragon";
-        List<Book> result = bookRepository.selectBookByName(bookName);
+        List<Book> result = bookRepository.searchBook(bookName);
         String actual = result.get(0).bookName;
         assertThat(actual, is(bookName));
     }
@@ -54,23 +54,23 @@ public class BookRepositoryTest {
     public void bookAdded() throws Exception {
         Book newBook = new Book("Amber","Roger Zelazny", 1960);
         bookRepository.addBook(newBook);
-        List<Book> allBooks = bookRepository.selectAllBooks();
-        int tableRows = allBooks.size();
-        assertThat(tableRows, is(3));
+        List<Book> allBooks = bookRepository.searchBook("Amber");
+        Book actual = allBooks.get(0);
+        assertThat(actual, is(equalTo(newBook)));
     }
 
     @Test
     public void bookUpdated() throws Exception {
         Book updatedBook = new Book("The Name of the Wind", "Patrick Rothfuss", 2005);
         bookRepository.updateBook(updatedBook);
-        List<Book> changedBook = bookRepository.selectBookByName(updatedBook.bookName);
+        List<Book> changedBook = bookRepository.searchBook(updatedBook.bookName);
         assertThat(updatedBook, is(equalTo(changedBook.get(0))));
     }
 
     @Test
     public void bookDeleted() throws Exception {
         Book book = new Book("Eragon", "Christopher Paulini", 2002);
-        bookRepository.deleteBook(book);
+        bookRepository.deleteBook("Eragon");
         List<Book> allBooks = bookRepository.selectAllBooks();
         int tableRows = allBooks.size();
         assertThat(tableRows, is(1));

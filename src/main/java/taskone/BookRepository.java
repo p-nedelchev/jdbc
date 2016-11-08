@@ -35,7 +35,7 @@ public class BookRepository {
         return books;
     }
 
-    public List<Book> selectBookByName(String name) {
+    public List<Book> searchBook(String name) {
         List<Book> books = new LinkedList<>();
         ResultSet resultSet = null;
         try {
@@ -69,13 +69,12 @@ public class BookRepository {
         return affectedRows;
     }
 
-    public int deleteBook(Book book)  {
+    public int deleteBook(String bookName)  {
         PreparedStatement preparedStatement = null;
         int deletedRows = 0;
         try {
-            preparedStatement = connection.prepareStatement("DELETE FROM " + tableName + " WHERE book_name = ? and author = ?");
-            preparedStatement.setString(1, book.bookName);
-            preparedStatement.setString(2, book.author);
+            preparedStatement = connection.prepareStatement("DELETE FROM " + tableName + " WHERE book_name = ? ");
+            preparedStatement.setString(1, bookName);
             deletedRows = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,7 +82,7 @@ public class BookRepository {
         return deletedRows;
     }
 
-    public void addBook(Book book) {
+    public Book addBook(Book book) {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement("INSERT INTO " + tableName + "(book_name,author,year) VALUES (?, ?, ?)");
@@ -94,6 +93,7 @@ public class BookRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return book;
     }
 
     public int addBooks(List<Book> books) {
