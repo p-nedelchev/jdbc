@@ -70,11 +70,14 @@ public class ConcreteTripRepositoryTest {
 
     @Test
     public void tripUpdated() throws Exception {
-        populateRepository();
+        Person george = new Person("george","3333333333", 18, "test@domain.com" );
+        Trip georgeTrip = new Trip(george.egn, LocalDate.of(2016, 11, 3), LocalDate.of(2016,11,8), "SF");
         Trip georgeTripUpdated = new Trip("3333333333", LocalDate.of(2016, 11, 3), LocalDate.of(2016,11,8), "VN");
+        tripRepository.addPerson(george);
+        tripRepository.addTrip(georgeTrip);
         tripRepository.updateTrip(georgeTripUpdated);
         List<Trip> foundTrips = tripRepository.allTrips();
-        assertThat(foundTrips.size(), is(3));
+        assertThat(foundTrips.size(), is(1));
         assertThat(foundTrips, hasItem(georgeTripUpdated) );
     }
 
