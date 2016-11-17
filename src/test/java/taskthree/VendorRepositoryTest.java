@@ -42,8 +42,10 @@ public class VendorRepositoryTest {
     @Test
     public void historyPageFetched() throws Exception {
         populateHistory();
+        int page = 3;
+        int limit = 2;
         Vendor lastPageVendor = new Vendor("ebay", 2, "www.ebay.com", 1);
-        List<Vendor> history = vendorRepository.history(3, 2);
+        List<Vendor> history = vendorRepository.history(page, limit);
         assertThat(history.size(), is(1));
         assertThat(history, hasItem(lastPageVendor));
     }
